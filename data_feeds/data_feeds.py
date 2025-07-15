@@ -53,19 +53,19 @@ def fetch_fred_series(series_id):
 # === Final Combined Indicator DataFrame ===
 def get_all_indicators():
     ism = fetch_combined_ism()
+    umcsent = fetch_fred_series("UMCSENT")
+    housing = fetch_fred_series("HOUST")
 
-    # ✅ Ensure ISM is a Series, not a DataFrame
-    if isinstance(ism, pd.DataFrame):
-        if ism.shape[1] == 1:
-            ism = ism.iloc[:, 0]
-        else:
-            raise ValueError("ISM data returned with multiple columns. Expected a single-column DataFrame or Series.")
-    ism.name = "ISM_PMI"
+    df = pd.concat([
+        ism.rename("ISM_PMI"),
+        umcsent.rename("UMCSI"),
+        housing.rename("HousingStarts")
+    ], axis=1)
 
-    umcsent = fetch_fred_series("UMCSENT").rename("UMCSI")
-    housing = fetch_fred_series("HOUST").rename("HousingStarts")
+    # ✅ Ensure datetime index
+    df.index = pd.to_datetime(df.index)
 
-    df = pd.concat([ism, umcsent, housing], axis=1)
+    # ✅ Now you can safely resample
     df = df.dropna().resample("M").mean()
     return df
 
