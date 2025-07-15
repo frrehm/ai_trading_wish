@@ -36,3 +36,22 @@ with tab2:
     st.markdown("### 🧠 Auto-Generated Worldview")
     view = wish_engine.generate_worldview(df)
     st.code(view)
+
+
+
+import requests
+
+API_KEY = "eff8f9962e5748f3998c10876408df4a"
+SERIES_ID = "UMCSENT"  # Michigan Consumer Sentiment
+
+url = f"https://api.stlouisfed.org/fred/series/observations?series_id={SERIES_ID}&api_key={API_KEY}&file_type=json"
+
+response = requests.get(url)
+
+if response.status_code != 200:
+    print("❌ Error:", response.status_code)
+    print("Message:", response.text)
+else:
+    print("✅ Success! Sample observation:")
+    print(response.json()["observations"][:2])
+
