@@ -56,11 +56,18 @@ def get_all_indicators():
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
 
-    df = pd.concat([
-        ism.rename("ISM_PMI"),
-        umcsent.rename("UMCSI"),
-        housing.rename("HousingStarts")
-    ], axis=1)
+  # If `ism` is a DataFrame with one column, rename that column
+if isinstance(ism, pd.DataFrame):
+    ism.columns = ["ISM_PMI"]
+else:  # If it’s a Series
+    ism = ism.rename("ISM_PMI")
+
+df = pd.concat([
+    ism,
+    umcsent.rename("UMCSI"),
+    housing.rename("HousingStarts")
+], axis=1)
+
 
     df = df.dropna().resample("M").mean()
     return df
