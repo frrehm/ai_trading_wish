@@ -39,17 +39,18 @@ def fetch_ism_data():
     return df
 
 def get_all_indicators():
-    ism = fetch_ism_data().rename("ISM_PMI")
-    umcsent = fetch_fred_series("UMCSENT").rename("UMCSI")
-    housing = fetch_fred_series("HOUST").rename("HousingStarts")
+    ism_df = fetch_ism_data()
+    ism = ism_df.iloc[:, 0]
+    ism.name = "ISM_PMI"
+
+    umcsent = fetch_fred_series("UMCSENT")
+    umcsent.name = "UMCSI"
+
+    housing = fetch_fred_series("HOUST")
+    housing.name = "HousingStarts"
 
     df = pd.concat([ism, umcsent, housing], axis=1)
-    df = df.dropna()
-
-    # Ensure datetime index before resampling
-    df.index = pd.to_datetime(df.index)
-    df = df.resample("M").mean()
-
+    df = df.dropna().resample("M").mean()
     return df
 
 def plot_indicators(df):
