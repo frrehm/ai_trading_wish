@@ -1,6 +1,11 @@
 import streamlit as st
 from wish_engine import analyzer
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 from data_feeds import leading_indicators
+
 from wish_engine import worldview_generator
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
