@@ -55,3 +55,10 @@ else:
     print("✅ Success! Sample observation:")
     print(response.json()["observations"][:2])
 
+import scraper.ism_fetcher as ism
+
+if st.button("🔁 Refresh ISM Data"):
+    with st.spinner("Fetching latest ISM data..."):
+        ism.full_ism_pipeline()
+        st.success("✅ ISM data updated!")
+
