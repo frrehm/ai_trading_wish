@@ -2,6 +2,7 @@ import streamlit as st
 import data_feeds
 import wish_engine
 from wish_engine import analyzer
+from data_feeds import data_feeds
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
