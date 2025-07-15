@@ -56,11 +56,14 @@ def get_all_indicators():
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
 
-    df = pd.concat([
-        ism.rename("ISM_PMI"),
-        umcsent.rename("UMCSI"),
-        housing.rename("HousingStarts")
-    ], axis=1)
+# Convert to Series if needed and rename properly
+ism_series = ism.iloc[:, 0].rename("ISM_PMI")
+
+df = pd.concat([
+    ism_series,
+    umcsent.rename("UMCSI"),
+    housing.rename("HousingStarts")
+], axis=1)
 
     # ✅ Ensure datetime index
     df.index = pd.to_datetime(df.index)
