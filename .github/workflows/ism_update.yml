@@ -1,1 +1,35 @@
+name: Monthly ISM PMI Updater
+
+on:
+  schedule:
+    - cron: '0 9 2 * *'  # Runs 9:00 UTC on the 2nd of each month
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run ISM PMI Fetcher
+        run: |
+          python scraper/ism_fetcher.py
+
+      - name: Commit updated CSV
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add data/ISM_PMI_Historical.csv
+          git commit -m "📈 Update ISM PMI data"
+          git push
 
