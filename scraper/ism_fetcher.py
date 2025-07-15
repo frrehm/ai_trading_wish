@@ -115,8 +115,4 @@ def interpret_ism_comments(comments: str) -> dict:
 # ✅ Add this to main.py under your leading indicator chart
 import scraper.ism_fetcher as ism
 
-if st.button("🔁 Refresh ISM Data"):
-    with st.spinner("Fetching latest ISM data..."):
-        ism.full_ism_pipeline()
-        st.success("✅ ISM data updated!")
 
