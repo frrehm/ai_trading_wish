@@ -1,6 +1,6 @@
 import pandas as pd
 import requests
-from .fred_fetcher import fetch_fred_series
+from data_feeds.fred_fetcher import fetch_fred_series
 from scraper.ism_fetcher import fetch_ism_data
 
 def get_all_indicators():
