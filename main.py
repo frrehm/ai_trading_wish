@@ -1,8 +1,7 @@
 import streamlit as st
-import data_feeds
+import data_feeds.data_feeds as data_feeds
 import wish_engine
 from wish_engine import analyzer
-from data_feeds import data_feeds
 import scraper.ism_fetcher as ism
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
