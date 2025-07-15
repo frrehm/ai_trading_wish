@@ -56,20 +56,21 @@ def get_all_indicators():
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
 
-# Convert to Series if needed and rename properly
-ism_series = ism.iloc[:, 0].rename("ISM_PMI")
+    # Convert to Series if needed and rename properly
+    ism_series = ism.iloc[:, 0].rename("ISM_PMI") if isinstance(ism, pd.DataFrame) else ism.rename("ISM_PMI")
 
-df = pd.concat([
-    ism_series,
-    umcsent.rename("UMCSI"),
-    housing.rename("HousingStarts")
-], axis=1)
+    df = pd.concat([
+        ism_series,
+        umcsent.rename("UMCSI"),
+        housing.rename("HousingStarts")
+    ], axis=1)
 
     # ✅ Ensure datetime index
     df.index = pd.to_datetime(df.index)
 
     # ✅ Now you can safely resample
     df = df.dropna().resample("M").mean()
+
     return df
 
 # === Plotting ===
