@@ -9,14 +9,22 @@ def fetch_fred_series(series_id):
     url = f"{BASE_URL}?series_id={series_id}&api_key={FRED_API_KEY}&file_type=json"
     response = requests.get(url)
     data = response.json()
-    observations = data.get("observations", [])
+
+    if "observations" not in data:
+        raise ValueError(f"No data returned for series ID: {series_id}")
+
+    observations = data["observations"]
     df = pd.DataFrame(observations)
+
+    if "date" not in df or "value" not in df:
+        raise ValueError(f"Malformed data for {series_id}: {df.head()}")
+
     df["date"] = pd.to_datetime(df["date"])
     df["value"] = pd.to_numeric(df["value"], errors="coerce")
     return df.set_index("date")["value"]
 
 def get_all_indicators():
-    ism = fetch_fred_series("ISM/MAN_PMI")
+    ism = fetch_fred_series("NAPM")
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
     df = pd.concat([
