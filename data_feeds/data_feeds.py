@@ -24,7 +24,7 @@ def fetch_fred_series(series_id):
     return df.set_index("date")["value"]
 
 def get_all_indicators():
-    ism = fetch_fred_series("NAPM")
+    ism = fetch_fred_series("NAPMPMI")
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
     df = pd.concat([
