@@ -1,14 +1,7 @@
 import streamlit as st
-import sys
-import os
-
-# 🔧 Add local folders to Python path so Streamlit can import them
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "data_feeds")))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "wish_engine")))
-
-import leading_indicators
-import worldview_generator
-import analyzer  # This assumes analyzer.py is inside wish_engine
+import data_feeds
+import wish_engine
+from wish_engine import analyzer
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
@@ -27,17 +20,18 @@ with tab2:
     st.title("🧭 Macro Dashboard")
     st.markdown("Uses ISM, UMCSI, and Housing Starts to generate a macro 'Worldview'")
 
-    # Load data
+    # Load and process macro data
     with st.spinner("Fetching indicator data..."):
-        df = leading_indicators.get_all_indicators()
+        df = data_feeds.get_all_indicators()
 
-    # Plot chart
-    st.plotly_chart(leading_indicators.plot_indicators(df), use_container_width=True)
+    # Show chart
+    chart = data_feeds.plot_indicators(df)
+    st.plotly_chart(chart, use_container_width=True)
 
     # Show latest values
     st.dataframe(df.tail(3).round(2))
 
-    # Generate and display worldview
+    # Generate and display Worldview
     st.markdown("### 🧠 Auto-Generated Worldview")
-    view = worldview_generator.generate_worldview(df)
+    view = wish_engine.generate_worldview(df)
     st.code(view)
