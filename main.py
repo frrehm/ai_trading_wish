@@ -1,12 +1,14 @@
 import streamlit as st
-from wish_engine import analyzer
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from data_feeds import leading_indicators
+# 🔧 Add local folders to Python path so Streamlit can import them
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "data_feeds")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "wish_engine")))
 
-from wish_engine import worldview_generator
+import leading_indicators
+import worldview_generator
+import analyzer  # This assumes analyzer.py is inside wish_engine
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
