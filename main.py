@@ -31,14 +31,24 @@ with tab2:
     st.markdown("Uses ISM, UMCSI, and Housing Starts to generate a macro 'Worldview'")
 
     with st.spinner("Fetching indicator data..."):
-        df = data_feeds.get_all_indicators()
+        indicators = data_feeds.get_all_indicators()  # ← this returns a dict of series
 
-    # Plot indicators (see next section)
-    chart = data_feeds.plot_indicators(df)
-    st.plotly_chart(chart, use_container_width=True)
+    # Plot each indicator separately
+    charts = data_feeds.plot_each_indicator(indicators)
+    for name, fig in charts.items():
+        st.subheader(name)
+        st.plotly_chart(fig, use_container_width=True)
 
-    st.dataframe(df.tail(3).round(2))
+    # Show the latest values
+    latest = {name: series.dropna().iloc[-1] for name, series in indicators.items()}
+    latest_df = pd.DataFrame(latest, index=["Latest"]).T.round(2)
+    st.dataframe(latest_df)
+
+    # Generate and show Worldview from full combined DataFrame
+    full_df = pd.concat(indicators.values(), axis=1)
+    full_df.columns = indicators.keys()
+    full_df = full_df.dropna()
 
     st.markdown("### 🧠 Auto-Generated Worldview")
-    view = wish_engine.generate_worldview(df)
+    view = wish_engine.generate_worldview(full_df)
     st.code(view)
