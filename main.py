@@ -18,6 +18,7 @@ with tab1:
 
     # Load and process macro data
     with st.spinner("Fetching indicator data..."):
+        ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
 
     # Combine all indicators into a DataFrame
