@@ -5,7 +5,7 @@ import streamlit as st
 from data_feeds import data_feeds
 import wish_engine
 from wish_engine import analyzer
-import scraper.ism_fetcher as ism
+#import scraper.ism_fetcher as ism
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
@@ -41,7 +41,7 @@ with tab2:
     st.code(view)
 
 # Button to refresh ISM data
-if st.button("🔁 Refresh ISM Data"):
-    with st.spinner("Fetching latest ISM data..."):
-        ism.full_ism_pipeline()
-        st.success("✅ ISM data updated!")
+#if st.button("🔁 Refresh ISM Data"):
+    #with st.spinner("Fetching latest ISM data..."):
+       # ism.full_ism_pipeline()
+       # st.success("✅ ISM data updated!")
