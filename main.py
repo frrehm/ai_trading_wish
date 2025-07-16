@@ -21,6 +21,16 @@ with tab1:
         ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
 
+    st.write("🔍 Indicators loaded:", list(indicators.keys()))
+    
+    # Show the last few rows of ISM_PMI
+    if "ISM_PMI" in indicators:
+        st.write("✅ ISM_PMI sample:")
+        st.write(indicators["ISM_PMI"].dropna().tail())
+    else:
+        st.error("❌ ISM_PMI not found in indicators!")
+
+    
     # Combine all indicators into a DataFrame
     df = pd.concat(indicators.values(), axis=1)
     df.columns = indicators.keys()
@@ -41,6 +51,15 @@ with tab2:
     with st.spinner("Fetching indicator data..."):
         ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
+
+      st.write("🔍 Indicators loaded:", list(indicators.keys()))
+    
+    # Show the last few rows of ISM_PMI
+    if "ISM_PMI" in indicators:
+        st.write("✅ ISM_PMI sample:")
+        st.write(indicators["ISM_PMI"].dropna().tail())
+    else:
+        st.error("❌ ISM_PMI not found in indicators!")
 
     # Plot each indicator separately
     charts = data_feeds.plot_each_indicator(indicators)
