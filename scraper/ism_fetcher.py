@@ -6,6 +6,10 @@ import pandas as pd
 from datetime import datetime
 import os
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from nlp.comment_interpreter import interpret_ism_comments
 
 PMI_URL = "https://www.ismworld.org/supply-management-news-and-reports/reports/pmi/"
