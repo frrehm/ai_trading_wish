@@ -8,6 +8,8 @@ from wish_engine import analyzer
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
+view = wish_engine.generate_worldview(df)
+
 # Tabs for navigation
 tab1, tab2 = st.tabs(["💹 WISH Assistant", "🧭 Macro Dashboard"])
 
