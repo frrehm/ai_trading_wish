@@ -1,5 +1,5 @@
 import streamlit as st
-import data_feeds.data_feeds as data_feeds
+from data_feeds import data_feeds
 import wish_engine
 from wish_engine import analyzer
 import scraper.ism_fetcher as ism
