@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from ..scraper.ism_fetcher import fetch_ism_data
+from scraper.ism_fetcher import fetch_ism_data
 from data_feeds.fred_fetcher import fetch_fred_series  # make sure this exists
 
 def get_all_indicators():
