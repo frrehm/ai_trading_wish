@@ -1,17 +1,12 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-import wish_engine
-view = wish_engine.generate_worldview(df)
-
 import streamlit as st
 from data_feeds import data_feeds
 import wish_engine
 from wish_engine import analyzer
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
-
-view = wish_engine.generate_worldview(df)
 
 # Tabs for navigation
 tab1, tab2 = st.tabs(["💹 WISH Assistant", "🧭 Macro Dashboard"])
