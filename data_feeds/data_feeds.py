@@ -16,13 +16,19 @@ def fetch_ism_data():
 def get_all_indicators():
     # Load ISM PMI
     ism_df = fetch_ism_data()
-    ism = ism_df["ISM_PMI"].copy()
+    print("📊 ISM columns:", ism_df.columns.tolist())  # Debug
+
+    if "ISM_PMI" in ism_df.columns:
+        ism = ism_df["ISM_PMI"].copy()
+    else:
+        ism = ism_df.iloc[:, 0].copy()  # fallback to first column
+
     ism.name = "ISM_PMI"
     ism.index = pd.to_datetime(ism.index, errors='coerce')
     ism = ism[~ism.index.isnull()]
     ism = ism.resample("M").mean()
 
-    # Fetch FRED indicators
+    # FRED indicators remain below this
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
 
