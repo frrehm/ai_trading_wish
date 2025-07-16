@@ -1,6 +1,6 @@
 # data_feeds/data_feeds.py
 import pandas as pd
-from scraper.ism_fetcher import fetch_ism_data
+from ..scraper.ism_fetcher import fetch_ism_data
 from data_feeds.fred_fetcher import fetch_fred_series  # make sure this exists
 
 def get_all_indicators():
