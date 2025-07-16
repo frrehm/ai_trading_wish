@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from datetime import datetime
 
-FRED_API_KEY = "f4534c7eff90496:rvvfsfhx2op7027"
+FRED_API_KEY = "eff8f9962e5748f3998c10876408df4a"
 BASE_URL = "https://api.stlouisfed.org/fred/series/observations"
 
 def fetch_fred_series(series_id: str) -> pd.Series:
