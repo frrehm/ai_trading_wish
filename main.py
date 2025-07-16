@@ -58,3 +58,7 @@ with tab2:
     st.markdown("### 🧠 Auto-Generated Worldview")
     view = wish_engine.generate_worldview(full_df)
     st.code(view)
+
+st.write("✅ ISM_PMI Preview:")
+st.write(indicators["ISM_PMI"].dropna().tail())
+
