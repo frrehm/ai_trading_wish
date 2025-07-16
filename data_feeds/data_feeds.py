@@ -1,7 +1,8 @@
 import pandas as pd
-from data_feeds.fred_fetcher import fetch_fred_series
 import plotly.graph_objs as go
+from data_feeds.fred_fetcher import fetch_fred_series
 
+# --- Load ISM PMI from CSV ---
 def fetch_ism_data():
     """
     Loads ISM PMI data from your local CSV.
@@ -10,53 +11,65 @@ def fetch_ism_data():
     df = df.set_index("Date").sort_index()
     return df
 
-def plot_indicators(df):
-    fig = go.Figure()
-    for col in df.columns:
-        fig.add_trace(go.Scatter(x=df.index, y=df[col], mode='lines', name=col))
-    fig.update_layout(title="Macro Indicators", xaxis_title="Date", yaxis_title="Value")
-    return fig
 
+# --- Return indicators as separate Series ---
 def get_all_indicators():
     # Load ISM PMI
     ism_df = fetch_ism_data()
     ism = ism_df["ISM_PMI"].copy()
     ism.name = "ISM_PMI"
     ism.index = pd.to_datetime(ism.index, errors='coerce')
-    if ism.index.isnull().any():
-        print("Bad ISM index values:", ism.index[ism.index.isnull()])
+    ism = ism[~ism.index.isnull()]
+    ism = ism.resample("M").mean()
 
     # Fetch FRED indicators
     umcsent = fetch_fred_series("UMCSENT")
     housing = fetch_fred_series("HOUST")
 
-    # Ensure all have datetime index
+    # Clean datetime
     umcsent.index = pd.to_datetime(umcsent.index, errors='coerce')
     housing.index = pd.to_datetime(housing.index, errors='coerce')
-
-    # Optionally print bad dates for debugging
-    if umcsent.index.isnull().any():
-        print("Bad UMCSI index values:", umcsent.index[umcsent.index.isnull()])
-    if housing.index.isnull().any():
-        print("Bad HousingStarts index values:", housing.index[housing.index.isnull()])
-
-    # Drop any rows with invalid (NaT) index
-    ism = ism[~ism.index.isnull()]
     umcsent = umcsent[~umcsent.index.isnull()]
     housing = housing[~housing.index.isnull()]
 
-    # Rename
+    # Rename and resample
     umcsent.name = "UMCSI"
     housing.name = "HousingStarts"
+    umcsent = umcsent.resample("M").mean()
+    housing = housing.resample("M").mean()
 
-    # Combine
-    df = pd.concat([ism, umcsent, housing], axis=1)
+    return {
+        "ISM_PMI": ism,
+        "UMCSI": umcsent,
+        "HousingStarts": housing
+    }
 
-    # Make sure index is datetime and sorted
-    df.index = pd.to_datetime(df.index, errors='coerce')
-    df = df[~df.index.isnull()]
-    df = df.sort_index()
 
-    # Monthly average, allow missing values (no .dropna())
-    df = df.resample("M").mean()
-    return df
+# --- Plot each indicator on a separate Plotly chart ---
+def plot_each_indicator(indicators: dict):
+    figs = {}
+    for name, series in indicators.items():
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=series.index, y=series.values, mode='lines', name=name))
+        fig.update_layout(
+            title=name,
+            xaxis_title="Date",
+            yaxis_title="Value",
+            template="plotly_white"
+        )
+        figs[name] = fig
+    return figs
+
+
+# --- Optional: Original multi-line plot if needed ---
+def plot_indicators_combined(indicators: dict):
+    fig = go.Figure()
+    for name, series in indicators.items():
+        fig.add_trace(go.Scatter(x=series.index, y=series.values, mode='lines', name=name))
+    fig.update_layout(
+        title="Macro Indicators (Combined)",
+        xaxis_title="Date",
+        yaxis_title="Value",
+        template="plotly_white"
+    )
+    return fig
