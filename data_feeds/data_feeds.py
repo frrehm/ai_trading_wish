@@ -9,6 +9,10 @@ def fetch_ism_data():
     df = df.set_index("Date").sort_index()
     return df
 
+def plot_indicators(df):
+    # your code to create a plotly or matplotlib chart
+    pass
+
 def get_all_indicators():
     # Load ISM PMI
     ism_df = fetch_ism_data()
