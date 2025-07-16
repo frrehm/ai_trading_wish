@@ -9,9 +9,14 @@ def fetch_ism_data():
     df = df.set_index("Date").sort_index()
     return df
 
+import plotly.graph_objs as go
+
 def plot_indicators(df):
-    # your code to create a plotly or matplotlib chart
-    pass
+    fig = go.Figure()
+    for col in df.columns:
+        fig.add_trace(go.Scatter(x=df.index, y=df[col], mode='lines', name=col))
+    fig.update_layout(title="Macro Indicators", xaxis_title="Date", yaxis_title="Value")
+    return fig
 
 def get_all_indicators():
     # Load ISM PMI
