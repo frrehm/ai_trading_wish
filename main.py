@@ -39,6 +39,7 @@ with tab2:
     st.markdown("Uses ISM, UMCSI, and Housing Starts to generate a macro 'Worldview'")
 
     with st.spinner("Fetching indicator data..."):
+        ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
 
     # Plot each indicator separately
