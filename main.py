@@ -21,16 +21,15 @@ with tab1:
         ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
 
-    st.write("🔍 Indicators loaded:", list(indicators.keys()))
-    
-    # Show the last few rows of ISM_PMI
-    if "ISM_PMI" in indicators:
-        st.write("✅ ISM_PMI sample:")
-        st.write(indicators["ISM_PMI"].dropna().tail())
-    else:
-        st.error("❌ ISM_PMI not found in indicators!")
+        # Debug output inside the spinner
+        st.write("🔍 Indicators loaded:", list(indicators.keys()))
 
-    
+        if "ISM_PMI" in indicators:
+            st.write("✅ ISM_PMI sample:")
+            st.write(indicators["ISM_PMI"].dropna().tail())
+        else:
+            st.error("❌ ISM_PMI not found in indicators!")
+
     # Combine all indicators into a DataFrame
     df = pd.concat(indicators.values(), axis=1)
     df.columns = indicators.keys()
@@ -44,6 +43,7 @@ with tab1:
     st.markdown("### 🧠 AI-Generated WISH Strategy")
     st.success(suggestion)
 
+
 with tab2:
     st.title("🧭 Macro Dashboard")
     st.markdown("Uses ISM, UMCSI, and Housing Starts to generate a macro 'Worldview'")
@@ -52,14 +52,13 @@ with tab2:
         ism.full_ism_pipeline()  # 🔄 Update the CSV with the latest ISM data
         indicators = data_feeds.get_all_indicators()
 
-      st.write("🔍 Indicators loaded:", list(indicators.keys()))
-    
-    # Show the last few rows of ISM_PMI
-    if "ISM_PMI" in indicators:
-        st.write("✅ ISM_PMI sample:")
-        st.write(indicators["ISM_PMI"].dropna().tail())
-    else:
-        st.error("❌ ISM_PMI not found in indicators!")
+        # Debug output inside the spinner
+        st.write("🔍 Indicators loaded:", list(indicators.keys()))
+        if "ISM_PMI" in indicators:
+            st.write("✅ ISM_PMI sample:")
+            st.write(indicators["ISM_PMI"].dropna().tail())
+        else:
+            st.error("❌ ISM_PMI not found in indicators!")
 
     # Plot each indicator separately
     charts = data_feeds.plot_each_indicator(indicators)
