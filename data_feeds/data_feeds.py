@@ -1,5 +1,6 @@
 import pandas as pd
 from data_feeds.fred_fetcher import fetch_fred_series
+import plotly.graph_objs as go
 
 def fetch_ism_data():
     """
@@ -8,8 +9,6 @@ def fetch_ism_data():
     df = pd.read_csv("data/ISM_PMI_Historical.csv", parse_dates=["Date"])
     df = df.set_index("Date").sort_index()
     return df
-
-import plotly.graph_objs as go
 
 def plot_indicators(df):
     fig = go.Figure()
@@ -58,6 +57,6 @@ def get_all_indicators():
     df = df[~df.index.isnull()]
     df = df.sort_index()
 
-   # Monthly average, allow missing values (no .dropna())
-df = df.resample("M").mean()
-return df
+    # Monthly average, allow missing values (no .dropna())
+    df = df.resample("M").mean()
+    return df
