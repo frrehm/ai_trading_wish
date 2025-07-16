@@ -5,7 +5,6 @@ import streamlit as st
 from data_feeds import data_feeds
 import wish_engine
 from wish_engine import analyzer
-#import scraper.ism_fetcher as ism
 
 st.set_page_config(page_title="AI Trading Assistant", layout="wide")
 
@@ -34,6 +33,7 @@ with tab2:
     with st.spinner("Fetching indicator data..."):
         df = data_feeds.get_all_indicators()
 
+    # Plot indicators (see next section)
     chart = data_feeds.plot_indicators(df)
     st.plotly_chart(chart, use_container_width=True)
 
@@ -42,10 +42,3 @@ with tab2:
     st.markdown("### 🧠 Auto-Generated Worldview")
     view = wish_engine.generate_worldview(df)
     st.code(view)
-
-# Button to refresh ISM data
-#if st.button("🔁 Refresh ISM Data"):
-    #with st.spinner("Fetching latest ISM data..."):
-       # ism.full_ism_pipeline()
-       # st.success("✅ ISM data updated!")
-
