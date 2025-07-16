@@ -58,6 +58,6 @@ def get_all_indicators():
     df = df[~df.index.isnull()]
     df = df.sort_index()
 
-    # Monthly average
-    df = df.dropna().resample("M").mean()
-    return df
+   # Monthly average, allow missing values (no .dropna())
+df = df.resample("M").mean()
+return df
