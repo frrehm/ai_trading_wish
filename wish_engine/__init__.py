@@ -1,1 +1,1 @@
-from .generate_worldview import generate_worldview
+from .worldview import generate_worldview
