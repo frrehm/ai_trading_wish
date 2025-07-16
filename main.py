@@ -14,12 +14,17 @@ tab1, tab2 = st.tabs(["💹 WISH Assistant", "🧭 Macro Dashboard"])
 with tab1:
     st.title("💹 AI Trading Assistant using the W.I.S.H. Framework")
 
-    # Load and process macro data
-    with st.spinner("Fetching indicator data..."):
-        df = data_feeds.get_all_indicators()
+   # Load and process macro data
+with st.spinner("Fetching indicator data..."):
+    indicators = data_feeds.get_all_indicators()
 
-    # Create a simple worldview string from your data (example: use the last row)
-    worldview_str = df.tail(1).to_string()
+# Combine all indicators into a DataFrame
+df = pd.concat(indicators.values(), axis=1)
+df.columns = indicators.keys()
+df = df.dropna()
+
+# Create worldview string from last row
+worldview_str = df.tail(1).to_string()
 
     # Generate and show the W.I.S.H. recommendation
     suggestion = analyzer.run_wish_analysis(worldview_str)
